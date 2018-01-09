@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="venda_debito" pageWidth="555" pageHeight="84" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="798ae318-81b7-455f-8c30-e3266482231c">
+	<property name="ireport.zoom" value="1.7715610000000013"/>
+	<property name="ireport.x" value="197"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<parameter name="NUM_VENDA" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT COALESCE(SUM(pagamento.valor), 0.00), v1.valor, v1.usuario from PAGAMENTO
+INNER JOIN venda v1 ON v1.id = $P{NUM_VENDA}
+WHERE idvenda = $P{NUM_VENDA}]]>
+	</queryString>
+	<field name="COALESCE(SUM(pagamento.valor), 0.00)" class="java.math.BigDecimal"/>
+	<field name="valor" class="java.math.BigDecimal"/>
+	<field name="usuario" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="84" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="335" y="15" width="35" height="13" forecolor="#FF0000" uuid="53d6b329-34e2-4fad-bbcc-371fd51894ec"/>
+				<textElement>
+					<font isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Débito:]]></text>
+			</staticText>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
+				<reportElement x="386" y="15" width="169" height="13" forecolor="#000000" uuid="b3578ee7-5546-48f6-aa4a-3316afcc158a"/>
+				<textElement>
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["R$ " + ($F{valor}.subtract($F{COALESCE(SUM(pagamento.valor), 0.00)}))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="555" height="20" uuid="492cbfd4-5300-4fb7-a6ff-def2297fdf6c"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[Assinatura]]></text>
+			</staticText>
+			<line>
+				<reportElement x="179" y="67" width="198" height="1" uuid="754459e8-cee6-426b-934c-982d96744087"/>
+			</line>
+			<staticText>
+				<reportElement x="335" y="0" width="36" height="13" uuid="f190ab2c-799f-4c70-be66-016fd55714d5"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Pago:]]></text>
+			</staticText>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="386" y="0" width="169" height="13" uuid="c0922543-ce79-4974-ab51-e163feae553f"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["R$ " + $F{COALESCE(SUM(pagamento.valor), 0.00)}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="120" y="15" width="208" height="15" uuid="8c4527f7-f6aa-40a5-acaf-a71ffb4a09f6"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["Venda cadastrada por " + $F{usuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>

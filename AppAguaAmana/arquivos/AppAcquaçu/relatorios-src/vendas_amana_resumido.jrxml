@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="vendas_amana_resumido" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4f5ed853-444b-497f-8f91-8ed491803a41">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="217"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="DATA_INICIAL" class="java.sql.Timestamp">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATA_FINAL" class="java.sql.Timestamp">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT venda.id, venda.data,  COALESCE(SUM(pagamento.valor), 0.00)
+,( select sum(v1.valor) from venda v1 where day(venda.data) = day(v1.data) and v1.flag = 1)
+,( select count(*) from venda v where day(venda.data) = day(v.data) and v.flag = 1)
+FROM VENDA
+LEFT JOIN pagamento ON pagamento.idvenda = venda.id
+WHERE venda.flag = 1 AND venda.data >= $P{DATA_INICIAL} AND venda.data <= $P{DATA_FINAL}
+GROUP BY DAY(venda.data) ORDER BY DAY(venda.data)]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<field name="data" class="java.sql.Timestamp"/>
+	<field name="COALESCE(SUM(pagamento.valor), 0.00)" class="java.math.BigDecimal"/>
+	<field name="( select sum(v1.valor) from venda v1 where day(venda.data) = day(v1.data) and v1.flag = 1)" class="java.math.BigDecimal"/>
+	<field name="( select count(*) from venda v where day(venda.data) = day(v.data) and v.flag = 1)" class="java.lang.Long"/>
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{( select sum(v1.valor) from venda v1 where day(venda.data) = day(v1.data) and v1.flag = 1)}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0.00f)]]></initialValueExpression>
+	</variable>
+	<variable name="num_vendas" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{( select count(*) from venda v where day(venda.data) = day(v.data) and v.flag = 1)}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="pago" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{COALESCE(SUM(pagamento.valor), 0.00)}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0.00f)]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="4" width="99" height="62" uuid="a63c57af-0321-4424-8af1-7b9e0ddf39db"/>
+				<imageExpression><![CDATA["logomarca.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="108" y="13" width="405" height="33" uuid="348acbb4-7f60-4929-8d29-cc570b3a2aaf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Relatório de Vendas (Resumido)]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="265" y="46" width="93" height="22" forecolor="#666666" uuid="aba0572c-6b1a-413a-b888-41a9fe787582"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATA_INICIAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="239" y="46" width="25" height="22" forecolor="#666666" uuid="74a85cad-0f47-4a90-bbf1-da8f5ec7ef88"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<text><![CDATA[De]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="361" y="46" width="30" height="22" forecolor="#666666" uuid="74a85cad-0f47-4a90-bbf1-da8f5ec7ef88"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<text><![CDATA[Até]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="392" y="46" width="93" height="22" forecolor="#666666" uuid="aba0572c-6b1a-413a-b888-41a9fe787582"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATA_FINAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="2c2fb775-181d-4171-ba49-8cfd7f5f5349"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="442" y="19" width="111" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Em Aberto (R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="332" y="19" width="111" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Pago (R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="111" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="222" y="19" width="111" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Valor Total (R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="110" y="19" width="111" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Vendas]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField pattern="###0;-###0">
+				<reportElement style="Detail" x="111" y="1" width="111" height="15" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{( select count(*) from venda v where day(venda.data) = day(v.data) and v.flag = 1)}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement style="Detail" x="223" y="1" width="111" height="15" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{( select sum(v1.valor) from venda v1 where day(venda.data) = day(v1.data) and v1.flag = 1)}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement style="Detail" x="1" y="1" width="111" height="15" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="0e736759-5317-419e-9160-37041d517a2d"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement style="Detail" x="333" y="1" width="111" height="15" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COALESCE(SUM(pagamento.valor), 0.00)}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement style="Detail" x="442" y="1" width="111" height="15" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{( select sum(v1.valor) from venda v1 where day(venda.data) = day(v1.data) and v1.flag = 1)}.subtract( $F{COALESCE(SUM(pagamento.valor), 0.00)})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement style="Detail" x="-19" y="22" width="594" height="15" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Débito (R$): " + $V{total}.subtract($V{pago})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="0" y="21" width="168" height="15" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Valor Total (R$): " + $V{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="408" y="21" width="146" height="15" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement textAlignment="Right">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pago (R$): " + $V{pago}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="37" width="555" height="1" uuid="56b56587-fca1-4242-a941-c9822aedb769"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="555" height="1" uuid="56b56587-fca1-4242-a941-c9822aedb769"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="4" width="553" height="15" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Vendas: " + $V{num_vendas}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="ae502996-f02e-418a-ab55-925f355bf63a"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="bbf3249d-0f30-47c9-aab0-124a4ada0b6a"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="85879ca0-a753-499d-bf85-29f3fefcce2c"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

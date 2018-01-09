@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pagamentos_financeiro_tarde" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f5ed853-444b-497f-8f91-8ed491803a41">
+	<property name="ireport.zoom" value="2.5937424601000023"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="DATA_INICIAL" class="java.sql.Timestamp">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATA_FINAL" class="java.sql.Timestamp">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT pagamento.data as datapagamento, pagamento.valor,pagamento.forma, pagamento.idvenda, venda.data as datavenda, venda.idcliente as idcliente, pessoa.nome as nomecliente FROM pagamento
+INNER JOIN venda on venda.id = pagamento.idvenda
+INNER JOIN pessoa on pessoa.id = venda.idcliente
+WHERE venda.flag = 1 AND pagamento.forma <>
+"CRÉDITO ACUMULADO"
+AND TIME(pagamento.data) BETWEEN TIME('11:30:00') and TIME('23:59:59')
+AND pagamento.data >= $P{DATA_INICIAL} AND pagamento.data <= $P{DATA_FINAL} ORDER BY pagamento.data]]>
+	</queryString>
+	<field name="datapagamento" class="java.sql.Timestamp"/>
+	<field name="valor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="forma" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idvenda" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="datavenda" class="java.sql.Timestamp"/>
+	<field name="idcliente" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomecliente" class="java.lang.String"/>
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0.00f)]]></initialValueExpression>
+	</variable>
+	<variable name="dinheiro" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{forma}.equals("DINHEIRO") ? $F{valor}:new BigDecimal(0.00f))]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0.00f)]]></initialValueExpression>
+	</variable>
+	<variable name="cheque" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{forma}.equals("CHEQUE") ? $F{valor}:new BigDecimal(0.00f))]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0.00f)]]></initialValueExpression>
+	</variable>
+	<variable name="cartao" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{forma}.equals("CARTÃO") ? $F{valor}:new BigDecimal(0.00f))]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0.00f)]]></initialValueExpression>
+	</variable>
+	<variable name="promissoria" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{forma}.equals("PROMISSÓRIA") ? $F{valor}:new BigDecimal(0.00f))]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0.00f)]]></initialValueExpression>
+	</variable>
+	<variable name="deposito" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{forma}.equals("DEPÓSITO BANCÁRIO") ? $F{valor}:new BigDecimal(0.00f))]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0.00f)]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="285" y="4" width="137" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Data/Hora do Pagamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="5" y="4" width="34" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Venda]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="18" width="555" height="1" uuid="2c2fb775-181d-4171-ba49-8cfd7f5f5349"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="125" y="4" width="158" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="48" y="4" width="67" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Data da Venda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="428" y="4" width="53" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Valor (R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="493" y="4" width="56" height="15" forecolor="#000000" uuid="40202712-8081-449d-91a6-3efcf9845d25"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Forma]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement style="Detail" x="5" y="0" width="34" height="11" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idvenda}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="125" y="0" width="158" height="11" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomecliente}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement style="Detail" x="48" y="0" width="67" height="11" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datavenda}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement style="Detail" x="428" y="0" width="53" height="11" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement style="Detail" x="285" y="0" width="134" height="11" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datapagamento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement style="Detail" x="493" y="0" width="62" height="11" uuid="90374877-7b4b-44ca-a880-42887344a28d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{forma}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="11" width="555" height="1" uuid="0c3aafac-5d36-475d-bf22-75bffb50dd77"/>
+				<graphicElement>
+					<pen lineWidth="0.25" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="15" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="8e0f37af-6457-4234-910b-9763a5889e8f"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="1" width="555" height="14" uuid="fcb32238-f0b5-4647-b307-0725324c4af6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["2 - Dinheiro: R$ " + $V{dinheiro} +
+" / Cartão: R$ " + $V{cartao} +
+" / Cheque: R$ " + $V{cheque} +
+" / Prom.: R$ " + $V{promissoria} +
+" / Depósito: R$ " + $V{deposito} +
+" / TOTAL: R$ " + $V{total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="14" width="555" height="1" uuid="f1c00525-5ecb-46c6-9640-8b530795c69c"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

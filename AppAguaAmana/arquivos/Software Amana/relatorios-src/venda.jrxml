@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="venda" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="9" bottomMargin="20" isFloatColumnFooter="true" uuid="fd6c88ef-bd11-4f28-9fc3-b3241ecc4d20">
+	<property name="ireport.zoom" value="1.652892561983476"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="New Dataset 1" uuid="cfe2500f-b62f-4223-a900-16410137c900">
+		<queryString language="SQL">
+			<![CDATA[SELECT SUM(valor*quantidade), prod1.nome as NomeProduto, produtovenda.* FROM produtovenda
+INNER JOIN produto prod1 ON prod1.id = produtovenda.idproduto WHERE idvenda = 10]]>
+		</queryString>
+		<field name="SUM(valor*quantidade)" class="java.math.BigDecimal"/>
+		<field name="NomeProduto" class="java.lang.String"/>
+		<field name="quantidade" class="java.lang.Integer"/>
+		<field name="valorproduto" class="java.math.BigDecimal"/>
+	</subDataset>
+	<subDataset name="Table Dataset 1" uuid="6797ef55-2f03-4ab8-a4cf-8f38b71c450d"/>
+	<subDataset name="Table Dataset 2" uuid="de880a12-6b54-452a-ae27-9ed094b314d6"/>
+	<parameter name="NUM_VENDA" class="java.lang.Integer"/>
+	<parameter name="EXIBIR_DEBITO" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DEBITO" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[new BigDecimal(0.00f)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  p1.nome as NomeCliente,
+        p2.nome as NomeTransportador,
+        venda.*
+FROM venda
+INNER JOIN pessoa p1 ON p1.id = venda.idcliente
+INNER JOIN pessoa p2 ON p2.id = venda.idtransportador
+WHERE venda.id = $P{NUM_VENDA}]]>
+	</queryString>
+	<field name="NomeCliente" class="java.lang.String"/>
+	<field name="NomeTransportador" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="idcliente" class="java.lang.Long"/>
+	<field name="idtransportador" class="java.lang.Long"/>
+	<field name="transporte" class="java.lang.String"/>
+	<field name="desconto" class="java.math.BigDecimal"/>
+	<field name="valor" class="java.math.BigDecimal"/>
+	<field name="data" class="java.sql.Timestamp"/>
+	<field name="usuario" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="40" uuid="1cf380f8-f242-47af-9007-f84d7b72082d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="32" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[ÁGUA AMANA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="107" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="14" width="555" height="13" uuid="8e6fb61a-84c2-4b48-b984-2f7fb68d9b28"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fones:  (84) 3331 1119 - (84) 9996 7303 - (84) 9992 8227]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="14" uuid="8e6fb61a-84c2-4b48-b984-2f7fb68d9b28"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="11"/>
+				</textElement>
+				<text><![CDATA[Sítio Olho Dágua do Mato, 55 - Zona Rural - Assú/RN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="43" width="24" height="15" uuid="e80b44b4-8368-4db0-b5a1-7b2bb9e03f6e"/>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="58" width="34" height="15" uuid="e80b44b4-8368-4db0-b5a1-7b2bb9e03f6e"/>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="73" width="66" height="15" uuid="e80b44b4-8368-4db0-b5a1-7b2bb9e03f6e"/>
+				<textElement verticalAlignment="Top"/>
+				<text><![CDATA[Transportador:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="144" y="55" width="58" height="1" uuid="754459e8-cee6-426b-934c-982d96744087"/>
+			</line>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="147" y="43" width="54" height="15" uuid="8c4527f7-f6aa-40a5-acaf-a71ffb4a09f6"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="154" y="70" width="280" height="1" uuid="754459e8-cee6-426b-934c-982d96744087"/>
+			</line>
+			<textField pattern="###0">
+				<reportElement x="0" y="27" width="555" height="16" uuid="0973c5b1-eaef-44ec-a8db-76b54e701941"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NOTA DE CONFERÊNCIA Nº" + $F{id}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="156" y="58" width="399" height="15" uuid="8c4527f7-f6aa-40a5-acaf-a71ffb4a09f6"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{NomeCliente}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="188" y="73" width="367" height="15" uuid="8c4527f7-f6aa-40a5-acaf-a71ffb4a09f6"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{NomeTransportador}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="186" y="85" width="248" height="1" uuid="754459e8-cee6-426b-934c-982d96744087"/>
+			</line>
+			<staticText>
+				<reportElement x="120" y="88" width="52" height="15" uuid="e80b44b4-8368-4db0-b5a1-7b2bb9e03f6e"/>
+				<text><![CDATA[Transporte:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="174" y="88" width="381" height="15" uuid="8c4527f7-f6aa-40a5-acaf-a71ffb4a09f6"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{transporte}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="171" y="100" width="263" height="1" uuid="754459e8-cee6-426b-934c-982d96744087"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="24" uuid="baa4450c-1908-478d-9f4b-eb8a33a768bf"/>
+				<subreportParameter name="NUM_VENDA">
+					<subreportParameterExpression><![CDATA[$P{NUM_VENDA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["venda_produto.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="26">
+			<textField pattern="###0">
+				<reportElement x="386" y="0" width="169" height="13" uuid="c0922543-ce79-4974-ab51-e163feae553f"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["R$ " + $F{desconto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="335" y="0" width="46" height="13" uuid="f190ab2c-799f-4c70-be66-016fd55714d5"/>
+				<text><![CDATA[Desconto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="13" width="32" height="13" uuid="f190ab2c-799f-4c70-be66-016fd55714d5"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="386" y="13" width="169" height="13" uuid="c0922543-ce79-4974-ab51-e163feae553f"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["R$ " + $F{valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="200" height="20" uuid="b011761e-7897-4813-acf9-5917c77f923e">
+					<printWhenExpression><![CDATA[$P{EXIBIR_DEBITO}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["Débito Total Do Cliente: R$ " + $P{DEBITO}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="1">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="1" uuid="f8546708-4e97-4032-896e-73a978a2fe7a"/>
+				<subreportParameter name="NUM_VENDA">
+					<subreportParameterExpression><![CDATA[$P{NUM_VENDA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["venda_pagamento.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="1" uuid="6651f481-e22e-4ac0-9290-ccc33da969b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="NUM_VENDA">
+					<subreportParameterExpression><![CDATA[$P{NUM_VENDA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["venda_debito.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="40" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>
