@@ -18,7 +18,7 @@ public class Amana {
 	public static void main(String[] args) {
 		try {
             FabricaConexao.carregarUrl();
-            //AFrameLogin.getAFrameLogin();
+            AFrameLogin.getAFrameLogin();
             //PrincipalTela.getPrincipalTela();
         } catch (IOException ex) {
         	ex.printStackTrace();
