@@ -37,11 +37,11 @@ public class FabricaConexao {
 	public static void carregarUrl() throws IOException {
 		Properties config = new Properties();
 		//para testar no eclipse
-		InputStream inputStream = FabricaConexao.class.getClassLoader().getResourceAsStream("config/config.ini");
-		config.load(inputStream);
+		//InputStream inputStream = FabricaConexao.class.getClassLoader().getResourceAsStream("config/config.ini");
+		//config.load(inputStream);
 		
 		// Para colocar o sistema no ar
-		//config.load(new FileInputStream("./config/config.ini"));
+		config.load(new FileInputStream("./config/config.ini"));
 		setIp(config.getProperty("ip"));
 		setPorta(config.getProperty("porta"));
 		setBanco(config.getProperty("banco"));
