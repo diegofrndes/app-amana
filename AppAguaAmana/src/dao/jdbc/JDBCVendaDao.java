@@ -202,7 +202,7 @@ public class JDBCVendaDao implements VendaDao {
         PreparedStatement pstmt3 = null;
         try {
         	conexao.setAutoCommit(false);
-        	String updateitem = "INSERT INTO ENTRADASAIDAITEM WHERE motivo = ?";
+        	String updateitem = "DELETE FROM ENTRADASAIDAITEM WHERE motivo = ?";
             pstmt = conexao.prepareStatement(updateitem);
             pstmt.setString(1, "VENDA " + Integer.toString(vendaExcluida.getVenda().getId()));
             pstmt.executeUpdate();

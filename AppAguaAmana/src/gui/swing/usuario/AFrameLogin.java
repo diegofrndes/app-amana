@@ -110,8 +110,8 @@ public class AFrameLogin extends JFrame implements EspectadorLoginUsuario {
 		initComponents();
 		apresentador = new ApresentadorLoginUsuario(this);
 		this.setVisible(true);
-		//txtUsuario.setText("administrador");
-		//pswSenha.setText("adminamana@engi42");
+		txtUsuario.setText("administrador");
+		pswSenha.setText("adminamana@engi42");
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
